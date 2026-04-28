@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 
+const API_BASE = process.env.NODE_ENV === "production" ? "/api" : "http://localhost:5000/api";
+
 function App() {
   const [visitCount, setVisitCount] = useState(0);
   const [messages, setMessages] = useState([]);
@@ -14,17 +16,17 @@ function App() {
     try {
       console.log('Testing backend connection...');
       // Test health endpoint first
-      const healthResponse = await fetch('http://localhost:5000/api/health');
+      const healthResponse = await fetch(`${API_BASE}/health`);
       console.log('Health response:', healthResponse);
 
       // Fetch visit count
-      const visitResponse = await fetch('http://localhost:5000/api/visit-count');
+      const visitResponse = await fetch(`${API_BASE}/visit-count`);
       const visitData = await visitResponse.json();
       console.log('Visit data:', visitData);
       setVisitCount(visitData.count);
 
       // Fetch messages
-      const messagesResponse = await fetch('http://localhost:5000/api/messages');
+      const messagesResponse = await fetch(`${API_BASE}/messages`);
       const messagesData = await messagesResponse.json();
       console.log('Messages data:', messagesData);
       setMessages(messagesData.reverse()); // Show newest first

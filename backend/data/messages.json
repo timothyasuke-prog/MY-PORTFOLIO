@@ -1,0 +1,14 @@
+[
+  {
+    "email": "test@example.com",
+    "whatsappPhone": "+1234567890",
+    "message": "This is a test message from the contact form to verify real-time functionality.",
+    "timestamp": "2026-04-28T15:12:52.367Z"
+  },
+  {
+    "email": "tj@gmail.com",
+    "whatsappPhone": "0110506968",
+    "message": "can you help me do some coding",
+    "timestamp": "2026-04-28T19:10:38.025Z"
+  }
+]

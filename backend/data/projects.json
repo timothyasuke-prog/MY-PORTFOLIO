@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "E-Commerce Platform",
+    "description": "A full-stack e-commerce app with cart, auth, and payments.",
+    "techStack": ["React", "Node.js", "MongoDB", "Stripe"],
+    "liveUrl": "https://example.com",
+    "githubUrl": "https://github.com/yourname/ecommerce",
+    "featured": true,
+    "image": ""
+  },
+  {
+    "id": 2,
+    "title": "Task Manager App",
+    "description": "A productivity app with drag-and-drop task management.",
+    "techStack": ["React", "Express", "PostgreSQL"],
+    "liveUrl": "https://example.com",
+    "githubUrl": "https://github.com/yourname/taskmanager",
+    "featured": true,
+    "image": ""
+  },
+  {
+    "id": 3,
+    "title": "Weather Dashboard",
+    "description": "Real-time weather app using OpenWeather API.",
+    "techStack": ["React", "Node.js", "OpenWeather API"],
+    "liveUrl": "https://example.com",
+    "githubUrl": "https://github.com/yourname/weather",
+    "featured": false,
+    "image": ""
+  }
+]

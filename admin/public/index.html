@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Dashboard</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #00d4ff;
+            --accent-hover: #00b8e6;
+            --border: #333333;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --error: #ff4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg));
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .connection-status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .connected {
+            color: var(--success);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .disconnected {
+            color: var(--error);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .dashboard {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            animation: countUp 2s ease-out;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .messages-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .messages-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .message-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .message-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .message-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .message-contact {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .message-time {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .message-content {
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .message-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .message-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                filter: brightness(1);
+            }
+            to {
+                filter: brightness(1.2);
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1>Portfolio Admin Dashboard</h1>
+            <p>Real-time monitoring and message management</p>
+            <div id="connection-status" class="connection-status disconnected">
+                🔴 Connecting...
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div id="visit-count" class="stat-number">0</div>
+                    <div class="stat-label">Total Visits</div>
+                </div>
+
+                <div class="stat-card">
+                    <div id="message-count" class="stat-number">0</div>
+                    <div class="stat-label">Total Messages</div>
+                </div>
+            </div>
+
+            <div class="messages-section">
+                <h2>📬 Message Inbox</h2>
+                <div id="message-list" class="message-list">
+                    <div class="message-item">
+                        <p style="text-align: center; color: var(--text-secondary);">
+                            Connecting to server... Messages will appear here in real-time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.socket.io/4.8.3/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:5000');
+        const visitCountEl = document.getElementById('visit-count');
+        const messageCountEl = document.getElementById('message-count');
+        const messageListEl = document.getElementById('message-list');
+        const connectionStatusEl = document.getElementById('connection-status');
+
+        let messages = [];
+        let visitCount = 0;
+
+        // Socket connection events
+        socket.on('connect', () => {
+            console.log('Connected to server');
+            connectionStatusEl.textContent = '🟢 Connected';
+            connectionStatusEl.className = 'connection-status connected';
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+            connectionStatusEl.textContent = '🔴 Disconnected';
+            connectionStatusEl.className = 'connection-status disconnected';
+        });
+
+        // Real-time visit updates
+        socket.on('visitUpdate', (count) => {
+            console.log('Visit update:', count);
+            visitCount = count;
+            visitCountEl.textContent = count;
+            animateNumber(visitCountEl, count);
+        });
+
+        // Real-time message updates
+        socket.on('newMessage', (message) => {
+            console.log('New message:', message);
+            messages.unshift(message); // Add to beginning
+            updateMessageDisplay();
+            messageCountEl.textContent = messages.length;
+            animateNumber(messageCountEl, messages.length);
+        });
+
+        // Initialize data
+        socket.on('initData', (data) => {
+            console.log('Initial data:', data);
+            visitCount = data.visitCount || 0;
+            visitCountEl.textContent = visitCount;
+            messageCountEl.textContent = data.messagesCount || 0;
+        });
+
+        // Fetch initial messages
+        async function fetchInitialMessages() {
+            try {
+                const response = await fetch('http://localhost:5000/api/messages');
+                const data = await response.json();
+                messages = data.reverse(); // Show newest first
+                updateMessageDisplay();
+                messageCountEl.textContent = messages.length;
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        }
+
+        // Fetch initial visit count
+        async function fetchInitialVisits() {
+            try {
+                const response = await fetch('http://localhost:5000/api/visit-count');
+                const data = await response.json();
+                visitCount = data.count;
+                visitCountEl.textContent = visitCount;
+            } catch (error) {
+                console.error('Error fetching visits:', error);
+            }
+        }
+
+        function updateMessageDisplay() {
+            if (messages.length === 0) {
+                messageListEl.innerHTML = `
+                    <div class="message-item">
+                        <p style="text-align: center; color: var(--text-secondary);">
+                            No messages yet. Messages from the contact form will appear here in real-time.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            messageListEl.innerHTML = messages.map((message, index) => `
+                <div class="message-item" style="animation-delay: ${index * 0.1}s">
+                    <div class="message-header">
+                        <div class="message-contact">${escapeHtml(message.name || 'Anonymous')}</div>
+                        <div class="message-time">${formatTime(message.timestamp)}</div>
+                    </div>
+                    <div class="message-content">${escapeHtml(message.message || '')}</div>
+                    <div class="message-meta">
+                        ${message.email ? `<span>📧 ${escapeHtml(message.email)}</span>` : ''}
+                        ${message.phone ? `<span>📱 ${escapeHtml(message.phone)}</span>` : ''}
+                        ${message.whatsapp ? `<span>💬 ${escapeHtml(message.whatsapp)}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return '';
+            return new Date(timestamp).toLocaleString();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function animateNumber(element, target) {
+            const start = parseInt(element.textContent) || 0;
+            const duration = 1000;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                const current = Math.floor(start + (target - start) * progress);
+                element.textContent = current;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchInitialMessages();
+            fetchInitialVisits();
+        });
+
+        // Handle page visibility changes to refresh data
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                fetchInitialMessages();
+                fetchInitialVisits();
+            }
+        });
+    </script>
+</body>
+</html>

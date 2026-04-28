@@ -1,0 +1,22 @@
+const currentlyWorkingOn = [
+  {
+    id: "wip-1",
+    title: "AI Chat Application",
+    description: "A real time AI-powered chat application with streaming responses and conversation history.",
+    techStack: ["React", "WebSockets", "OpenAI API", "Node.js"],
+    githubUrl: "https://github.com/yourname/ai-chat",
+    image: "",
+    readme: "This project is an AI-powered chat platform that provides real-time conversations with AI assistants. Features include streaming responses, conversation history, and multiple AI model support."
+  },
+  {
+    id: "wip-2",
+    title: "Mobile Fitness App",
+    description: "Cross-platform fitness tracker with workout plans, progress charts, and nutrition logging.",
+    techStack: ["React Native", "Expo", "Firebase"],
+    githubUrl: "https://github.com/yourname/fitness-app",
+    image: "",
+    readme: "A comprehensive fitness tracking app built with React Native and Expo. Includes workout planning, progress visualization, nutrition tracking, and social features."
+  }
+];
+
+module.exports = currentlyWorkingOn;

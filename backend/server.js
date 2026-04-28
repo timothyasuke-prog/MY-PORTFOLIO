@@ -61,7 +61,21 @@ eventBus.on("visitUpdated", (count) => {
 });
 
 // Middleware
-app.use(cors({ origin: [CLIENT_URL, "http://localhost:5000", "http://localhost:3001", "http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176", "http://localhost:5177"] }));
+app.use(cors({
+  origin: [
+    CLIENT_URL,
+    "http://localhost:5000",
+    "http://localhost:3001",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://localhost:5176",
+    "http://localhost:5177",
+    /\.vercel\.app$/, // Allow all Vercel domains
+    "https://my-portfolio-*.vercel.app" // Allow your specific project domains
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes

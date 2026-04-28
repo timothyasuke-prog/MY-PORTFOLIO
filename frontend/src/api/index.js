@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+const API = axios.create({
+  baseURL: process.env.NODE_ENV === "production" ? "/api" : "http://localhost:5000/api"
+});
 
 export const fetchProjects = () => API.get("/projects");
 export const fetchFeaturedProjects = () => API.get("/projects/featured");

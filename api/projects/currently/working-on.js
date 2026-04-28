@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   if (req.method === 'GET') {
     try {
       const projects = getCurrentlyWorkingOn();
-      res.status(200).json(projects);
+      res.status(200).json({ data: projects });
     } catch (error) {
       console.error('Error fetching currently working on projects:', error);
       res.status(500).json({ error: 'Failed to fetch currently working on projects' });

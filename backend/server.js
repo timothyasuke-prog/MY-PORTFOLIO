@@ -119,6 +119,12 @@ io.on("connection", (socket) => {
   socket.emit("initData", { visitCount: visitData.count, messagesCount: messages.length });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export for Vercel serverless functions
+module.exports = app;
+
+// Start server only when not in Vercel environment
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}

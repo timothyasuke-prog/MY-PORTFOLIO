@@ -23,6 +23,10 @@
       "dest": "/frontend/assets/$1"
     },
     {
+      "src": "/(.*\\.(png|jpg|jpeg|webp|gif|svg|ico))",
+      "dest": "/frontend/$1"
+    },
+    {
       "src": "/favicon.svg",
       "dest": "/frontend/favicon.svg"
     },

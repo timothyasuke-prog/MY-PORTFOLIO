@@ -7,7 +7,7 @@ const projects = [
     techStack: ["React", "Node.js", "Express", "Vite"],
     image: "/portfolio-screenshot.png",
     githubUrl: "https://github.com/timothyasuke-prog/MY-PORTFOLIO",
-    liveUrl: "#",
+    liveUrl: "https://my-portfolio-nine-swart-31.vercel.app/",
     readme: "This is a portfolio website showcasing my projects and skills."
   },
   {

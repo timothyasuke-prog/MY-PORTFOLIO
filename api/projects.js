@@ -12,13 +12,13 @@ const projects = [
   },
   {
     id: 2,
-    title: "E-commerce Platform",
-    description: "Full-stack e-commerce solution with payment integration",
+    title: "spiceSpark",
+    description: "Full-stack recipe app with cart, auth, and payments",
     techStack: ["React", "Node.js", "MongoDB", "Stripe"],
-    image: "/ecommerce-screenshot.png",
-    githubUrl: "https://github.com/example/ecommerce",
-    liveUrl: "https://example-ecommerce.vercel.app",
-    readme: "A complete e-commerce platform with user authentication, product management, and payment processing."
+    image: "/spicespark-screenshot.png",
+    githubUrl: "https://github.com/timothyasuke-prog/spicespark",
+    liveUrl: "https://spicespark.onrender.com",
+    readme: "A complete recipe app with user authentication, recipe management, and payment processing."
   }
 ];
 

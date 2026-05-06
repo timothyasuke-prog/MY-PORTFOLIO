@@ -65,3 +65,4 @@ export const fetchProjectById = (id) => API.get(`/projects/${id}`);
 export const fetchCurrentlyWorkingOn = () =>
   withProductionFallback(API.get("/projects/currently/working-on"), fallbackWipProjects);
 export const sendContactMessage = (data) => API.post("/contact", data);
+export const fetchContactMessages = () => API.get("/messages");

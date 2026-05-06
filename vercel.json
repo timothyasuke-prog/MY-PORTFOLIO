@@ -15,8 +15,24 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js"
+      "src": "/api/messages/([^/]+)",
+      "dest": "/api/messages/[id].js"
+    },
+    {
+      "src": "/api/messages",
+      "dest": "/api/messages.js"
+    },
+    {
+      "src": "/api/contact",
+      "dest": "/api/contact.js"
+    },
+    {
+      "src": "/api/projects/currently/working-on",
+      "dest": "/api/projects/currently/working-on.js"
+    },
+    {
+      "src": "/api/projects",
+      "dest": "/api/projects.js"
     },
     {
       "src": "/assets/(.*)",

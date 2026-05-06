@@ -19,7 +19,33 @@ export const readMessages = () => {
   try {
     const raw = fs.readFileSync(dataFile, "utf8");
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    let changed = false;
+    const normalized = parsed.map((item) => {
+      const next = { ...item };
+      if (!next.id) {
+        next.id = crypto.randomUUID();
+        changed = true;
+      }
+      if (!next.status) {
+        next.status = "new";
+        changed = true;
+      }
+      if (!Object.prototype.hasOwnProperty.call(next, "repliedAt")) {
+        next.repliedAt = null;
+        changed = true;
+      }
+      return next;
+    });
+
+    if (changed) {
+      fs.writeFileSync(dataFile, JSON.stringify(normalized, null, 2), "utf8");
+    }
+
+    return normalized;
   } catch (error) {
     return [];
   }
@@ -55,6 +81,8 @@ export const createMessage = ({ email, whatsappPhone, message }) => {
     email: cleanEmail,
     whatsappPhone: cleanPhone,
     message: cleanMessage,
+    status: "new",
+    repliedAt: null,
     timestamp: new Date().toISOString(),
   };
 };
@@ -64,4 +92,22 @@ export const appendMessage = (newMessage) => {
   messages.push(newMessage);
   fs.writeFileSync(dataFile, JSON.stringify(messages, null, 2), "utf8");
   return newMessage;
+};
+
+export const updateMessageStatus = (id, status) => {
+  const messages = readMessages();
+  const index = messages.findIndex((item) => item.id === id);
+
+  if (index === -1) {
+    return null;
+  }
+
+  messages[index] = {
+    ...messages[index],
+    status,
+    repliedAt: status === "replied" ? new Date().toISOString() : null,
+  };
+
+  fs.writeFileSync(dataFile, JSON.stringify(messages, null, 2), "utf8");
+  return messages[index];
 };

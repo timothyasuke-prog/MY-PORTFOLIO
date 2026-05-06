@@ -45,6 +45,11 @@ const readJson = (filePath, defaultValue) => {
   }
 };
 const writeJson = (filePath, value) => fs.writeFileSync(filePath, JSON.stringify(value, null, 2));
+const isAdminAuthorized = (req) => {
+  const key = process.env.ADMIN_API_KEY;
+  if (!key) return true;
+  return req.headers["x-admin-key"] === key;
+};
 
 ensureJsonFile(visitCountFile, { count: 0 });
 ensureJsonFile(messagesFile, []);
@@ -96,8 +101,39 @@ app.get("/api/visit-count", (req, res) => {
 });
 
 app.get("/api/messages", (req, res) => {
+  if (!isAdminAuthorized(req)) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
   const messages = readJson(messagesFile, []);
-  res.json(messages.reverse());
+  res.json(messages.slice().reverse());
+});
+
+app.patch("/api/messages/:id", (req, res) => {
+  if (!isAdminAuthorized(req)) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const { id } = req.params;
+  const { status } = req.body || {};
+
+  if (!["new", "replied"].includes(status)) {
+    return res.status(400).json({ error: "Invalid status value." });
+  }
+
+  const messages = readJson(messagesFile, []);
+  const idx = messages.findIndex((item) => item.id === id);
+  if (idx === -1) {
+    return res.status(404).json({ error: "Message not found." });
+  }
+
+  messages[idx] = {
+    ...messages[idx],
+    status,
+    repliedAt: status === "replied" ? new Date().toISOString() : null,
+  };
+  writeJson(messagesFile, messages);
+  io.emit("messageUpdated", messages[idx]);
+  res.json({ data: messages[idx] });
 });
 
 app.use("/admin", express.static(path.join(adminFolder, "public")));

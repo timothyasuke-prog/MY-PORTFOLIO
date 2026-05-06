@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 let eventBus = null;
 const setContactEventBus = (bus) => {
@@ -35,9 +36,12 @@ const sendMessage = (req, res) => {
   }
 
   const contactMessage = {
+    id: crypto.randomUUID(),
     email,
     whatsappPhone,
     message,
+    status: "new",
+    repliedAt: null,
     timestamp: new Date().toISOString(),
   };
   console.log("📩 New contact message:", contactMessage);

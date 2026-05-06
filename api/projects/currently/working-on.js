@@ -1,29 +1,27 @@
-// Vercel API Route: /api/projects/currently-working-on
-const wipProjects = [
-  {
-    id: 3,
-    title: "AI Chat Application",
-    description: "Real-time chat application with AI integration",
-    techStack: ["React", "Socket.io", "OpenAI API", "Node.js"],
-    image: "/ai-chat-screenshot.png",
-    githubUrl: "https://github.com/timothyasuke-prog/ai-chat",
-    readme: "An AI-powered chat application with real-time messaging and AI responses."
-  },
-  {
-    id: 4,
-    title: "Mobile Fitness App",
-    description: "Cross-platform mobile app for fitness tracking",
-    techStack: ["React Native", "Firebase", "Health API"],
-    image: "/fitness-app-screenshot.png",
-    githubUrl: "https://github.com/timothyasuke-prog/fitness-app",
-    readme: "A mobile fitness tracking app with workout plans and progress monitoring."
-  }
-];
+import { isAdminAuthorized } from "../../_adminAuth.js";
+import { addProject, getWipProjects, validateNewProject } from "../../_projectsStore.js";
 
 export default function handler(req, res) {
-  if (req.method === 'GET') {
-    res.status(200).json({ data: wipProjects });
-  } else {
-    res.status(405).json({ error: 'Method not allowed' });
+  if (req.method === "GET") {
+    return res.status(200).json({ data: getWipProjects() });
   }
+
+  if (req.method === "POST") {
+    if (!isAdminAuthorized(req)) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const validated = validateNewProject(req.body || {});
+    if (validated.error) {
+      return res.status(400).json({ error: validated.error });
+    }
+
+    if (validated.data.status !== "working") {
+      return res.status(400).json({ error: "Use this endpoint for currently working on projects only." });
+    }
+
+    return res.status(201).json({ data: addProject(validated.data) });
+  }
+
+  return res.status(405).json({ error: "Method not allowed" });
 }

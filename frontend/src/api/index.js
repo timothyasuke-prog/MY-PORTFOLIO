@@ -64,6 +64,14 @@ export const fetchFeaturedProjects = () => API.get("/projects/featured");
 export const fetchProjectById = (id) => API.get(`/projects/${id}`);
 export const fetchCurrentlyWorkingOn = () =>
   withProductionFallback(API.get("/projects/currently/working-on"), fallbackWipProjects);
+export const createDoneProject = (data, adminKey) =>
+  API.post("/projects", data, {
+    headers: adminKey ? { "x-admin-key": adminKey } : {},
+  });
+export const createWorkingProject = (data, adminKey) =>
+  API.post("/projects/currently/working-on", data, {
+    headers: adminKey ? { "x-admin-key": adminKey } : {},
+  });
 export const sendContactMessage = (data) => API.post("/contact", data);
 export const fetchContactMessages = (adminKey) =>
   API.get("/messages", {

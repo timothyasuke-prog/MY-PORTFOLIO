@@ -19,6 +19,14 @@
       "dest": "/api/messages/[id].js"
     },
     {
+      "src": "/api/visit",
+      "dest": "/api/visit.js"
+    },
+    {
+      "src": "/api/visit-count",
+      "dest": "/api/visit-count.js"
+    },
+    {
       "src": "/api/messages",
       "dest": "/api/messages.js"
     },

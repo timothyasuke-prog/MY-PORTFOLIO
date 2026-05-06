@@ -1,9 +1,9 @@
 import fs from "fs";
-import path from "path";
 import crypto from "crypto";
+import { getDataDir, getDataFile } from "./_dataPaths.js";
 
-const dataDir = path.join(process.cwd(), "backend", "data");
-const dataFile = path.join(dataDir, "messages.json");
+const dataDir = getDataDir();
+const dataFile = getDataFile("messages.json");
 
 const ensureStore = () => {
   if (!fs.existsSync(dataDir)) {

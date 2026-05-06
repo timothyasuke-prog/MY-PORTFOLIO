@@ -2,13 +2,14 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { createRequire } from "module";
+import { getDataDir, getDataFile } from "./_dataPaths.js";
 
 const require = createRequire(import.meta.url);
 
-const dataDir = path.join(process.cwd(), "backend", "data");
-const projectsFile = path.join(dataDir, "projects.json");
-const wipFile = path.join(dataDir, "currentlyWorkingOn.json");
-const legacyWipFile = path.join(dataDir, "currentlyWorkingOn.js");
+const dataDir = getDataDir();
+const projectsFile = getDataFile("projects.json");
+const wipFile = getDataFile("currentlyWorkingOn.json");
+const legacyWipFile = path.join(process.cwd(), "backend", "data", "currentlyWorkingOn.js");
 
 const defaultProjects = [
   {
